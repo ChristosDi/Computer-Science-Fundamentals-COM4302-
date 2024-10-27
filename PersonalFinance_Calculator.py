@@ -1,4 +1,6 @@
 import csv #import CSV module
+import os #clear screen module
+os.system('cls') #clear screen
 
 #variables stored for menu DISPLAY
 welcomeMessage=("Welcome to Personal Finance Calculator")
@@ -26,7 +28,8 @@ def enterExpense():#ENTER EXPENSES method
     while True:
         try:#this try-except process cannot accept strings-input expected is integer
             #we can accept even negative numbers-->abs()method turning negative to positive
-            enter_expense=abs(int(input("Enter your monthly expenses: ")))
+            enter_expense=abs(float(input("Enter your monthly expenses: ")))
+            os.system('cls')
             print(f"Your Monthly Expenses are {enter_expense}")
             return enter_expense
         except ValueError:
@@ -36,13 +39,15 @@ def enterExpense():#ENTER EXPENSES method
 def enterIncome():#ENTER INCOME method
     while True:
         try:#this try-except process cannot accept strings-input expected is integer
-            enter_income=int(input("Enter your monthly income: "))
+            enter_income=float(input("Enter your monthly income: "))
             if -1>enter_income:#monthly income can't be negative number
                 print("***Invalid input. Please enter a number.***")
                 print(endBanner)
             elif enter_income >=0:
+                os.system('cls')
                 print(f"Your monthly income is {enter_income}!")
                 return enter_income
+                break
             else:#anything else but a number such as strings are invalid input
                 print("***Invalid input. Please enter a number.***")
                 print(endBanner)
@@ -50,29 +55,43 @@ def enterIncome():#ENTER INCOME method
             print("Invalid Input. Please enter a number.")
             print(endBanner)
 
-def mainMenuDisplay():#function to display main menu options
+def mainMenuDisplay():#function to DISPLAY MAIN MENU options
     print("Welcome to Personal Finance Calculator")
     print(choisesDisplay)
     print(endBanner)
 
 #MAIN MENU
-def main_menu():#function to call main menu with functionality 
+def main_menu():#function to CALL MAIN MENU with functionality 
     mainMenuDisplay()#DISPLAY main menu
+
+    #initialise
+    monthlyIncome=None
+    monthlyExpenses=None
+    summary=0
 
     while True:
         optionFromMenu=input(choice)
         if optionFromMenu == '4':
+            return False #returns false to the main_menu to exit while loop.
             break
         elif optionFromMenu== '1':
-            enterIncome()#returns INCOME value
-            monthlyIncome=enterIncome() #stores INCOME value
-            return monthlyIncome #method main_menu RETURNS income value
+            monthlyIncome=enterIncome()#returns INCOME value and stores on the variable
+            mainMenuDisplay()
+            #return monthlyIncome #method main_menu RETURNS income value
         elif optionFromMenu== '2':
-            enterExpense()#returns EXPENSES value
-            monthlyExpenses=enterExpense() #stores EXPENSES value
-            return monthlyExpenses #method main_menu RETURNS expenses value
+            monthlyExpenses=enterExpense() #stores EXPENSES value and stores on var.
+            mainMenuDisplay()
+            #return monthlyExpenses #method main_menu RETURNS expenses value
         elif optionFromMenu== '3':
-            print("VIEW SUMMARY")
+            if monthlyExpenses is None or monthlyIncome is None:
+                os.system('cls')
+                print("Please enter both \"income\" and \"expenses\" before viewing the summary.\n")
+                mainMenuDisplay()
+            else:
+                os.system('cls')
+                summary=monthlyIncome-monthlyExpenses
+                print(f"Summary: {summary}\nMonthly Income: {monthlyIncome}\nMonthly Expenses: {monthlyExpenses}")
+                mainMenuDisplay()
         else:
             print(wrongInput)
             print(choisesDisplay)
@@ -81,6 +100,8 @@ def main_menu():#function to call main menu with functionality
         
 
 #PROGRAM
-main_menu()
-
-
+while True:
+    checker=main_menu()
+    if checker== False:
+        print("Exiting...")
+        break
