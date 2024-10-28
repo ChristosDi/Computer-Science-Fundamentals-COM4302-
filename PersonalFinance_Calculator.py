@@ -9,6 +9,29 @@ choisesDisplay=("1. Enter Income\n2. Add Expences\n3. View Budget Summary\n4. Ex
 endBanner =("--------------------------------------------------------------------------------------------------------")
 choice =("Enter your choise: ")
 wrongInput=("***Invalid option. Please Try again***")
+inputError_str=("***Wrong! Please input a number. ***")
+
+#dictionary for storing ESSENTIAL EXPENSES
+essentialExpenses={
+"rent":0,
+"electricity":0,
+"water":0,
+"gas":0,
+"phone":0,
+"internet":0,
+"supermarket":0
+}
+#dictionary for storing NON-ESSENTIAL EXPENSES
+non_essentialExpenses={
+"dining_out":0,
+"events":0,
+"gym":0,
+"streaming_services":0,
+"haircut_salon":0,
+"clothing_accessories":0,
+"skincare_cosmentics":0,
+"travel":0
+}
 '''
 with open('PersonalFinance_Calculator.csv', 'w', newline='') as file:#opens CSV file in writtin mode (w mode) with the help of open()
     writer = csv.writer(file)#create CSV writter object
@@ -24,67 +47,41 @@ with open('PersonalFinance_Calculator.csv', 'r', newline='') as file:
     for row in reader:
         print(row)  # prints each row in the CSV
 '''
-
-#Expenses MENU:
-    #ESSENTIAL
-        #CREATE ESSENTIAL CATEGORIES
-        
-
-    #NON-ESSENTIAL
-        #CREATE NON ESSENTIAL CATEGORIES
-
-
-
+def essentialsMenu_Display():#MENU DISPLAY ESSENTIALS(to avoid repetition)
+    os.system('cls')
+    print(welcomeMessage)
+    print("-Essential Expenses-\n1. Rent/Mortgage Payment\n2. Electricity\n3. Water\n4. Gas/Heating\n5. Internet\n6. Phone \n7. Supermarket\n8. Exit")
+    print(endBanner)
 
 def enterExpense():#ENTER EXPENSES method
     os.system('cls')#clear screen before
     print(welcomeMessage)
     print("-Expenses Categories-\n1. Essential\n2. Non-Essential\n3. Exit")
     print(endBanner)
-    #dictionary for ESSENTIAL EXPENSES
-    essentialExpenses={
-    "rent":0,
-    "electricity":0,
-    "water":0,
-    "gas":0,
-    "phone":0,
-    "internet":0,
-    "supermarket":0
-    }
-    #dictionary for NON-ESSENTIAL EXPENSES
-    non_essentialExpenses={
-    "dining_out":0,
-    "events":0,
-    "gym":0,
-    "streaming_services":0,
-    "haircut_salon":0,
-    "clothing_accessories":0,
-    "skincare_cosmentics":0,
-    "travel":0
-    }
     while True:
         expenses_category=input(choice)
 
         if expenses_category=='3':#if CHOOSE to EXIT
             os.system('cls')#clear screen before breaking/going back to the previous menu
-
             break
         elif expenses_category=='1':#if CHOOSES ESSENTIAL 
-            os.system('cls')
-            print(welcomeMessage)
-            print("-Essential Expenses-\n1. Rent/Mortgage Payment\n2. Electricity\n3. Water\n4. Gas/Heating\n5. Internet\n6. Phone \n7. Supermarket\n8. Exit")
-            print(endBanner)
-            
+            essentialsMenu_Display()
             while True:
                 essential_option=input(choice)
-                if essential_option=='8':
+                
+                if essential_option=='8':#exit
                     os.system('cls')
-                    print(welcomeMessage)
-                    print("-Expenses Categories-\n1. Essential\n2. Non-Essential\n3. Exit")
-                    print(endBanner)
+                    essentialsMenu_Display()
                     break
                 elif essential_option == '1':
-                    essentialExpenses["rent"] = float(input("Enter your Rent/Mortgage Payment: "))
+                    while True:  # Loop until a valid number is entered for rent
+                        rent_input = input("Enter your Rent/Mortgage Payment: ")
+                        if rent_input.replace('.', '', 1).isdigit():  # Check if it's a valid number
+                            essentialExpenses["rent"] = float(rent_input)  # Store the valid number
+                            break  # Exit loop if input is valid
+                        else:
+                            os.system('cls')
+                            print(inputError_str)#display error message
                 elif essential_option == '2':
                     essentialExpenses["electricity"] = float(input("Enter your Electricity cost: "))
                 elif essential_option == '3':
@@ -142,7 +139,6 @@ def enterExpense():#ENTER EXPENSES method
             print("Invalid option. Please choose a number between 1 and 3.")
             print("-Expenses Categories-\n1. Essential\n2. Non-Essential\n3. Exit")
             print(endBanner)
-    return essentialExpenses, non_essentialExpenses #return the dictionaries to be used out of this method
 
 def enterIncome():#ENTER INCOME method
     while True:
@@ -187,7 +183,8 @@ def main_menu():#function to CALL MAIN MENU with functionality
             mainMenuDisplay()
         elif optionFromMenu== '2':
             os.system('cls')
-            essentialExpenses, nonEssentialExpenses = enterExpense() #stores EXPENSES value and stores on var.
+            enterExpense() 
+            #stores EXPENSES value and stores on var.
             mainMenuDisplay()
         elif optionFromMenu== '3':
             if monthlyExpenses is None or monthlyIncome is None:
@@ -211,5 +208,6 @@ def main_menu():#function to CALL MAIN MENU with functionality
 while True:
     checker=main_menu()
     if checker== False:
+        print(essentialExpenses, non_essentialExpenses)
         print("Exiting...")
         break
