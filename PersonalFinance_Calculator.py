@@ -148,7 +148,7 @@ def enterExpense():#ENTER EXPENSES method
             non_essentialsMenu_Display()
             while True:
                 nonEssential_option=input(choice)
-                if nonEssential_option=='9':#exit to EXPENSES CATEGORIES
+                if nonEssential_option=='9':#if CHOOSES to EXIT EXPENSES CATEGORIES
                     os.system('cls')
                     expensesMenu_Display()
                     break
@@ -156,28 +156,64 @@ def enterExpense():#ENTER EXPENSES method
                     while True:
                         try:
                             non_essentialExpenses["dining_out"]=abs(float(input("Enter your Dining Out cost:")))#we can accept even negative numbs as expenses-->abs()method turning negative to positive
+                            non_essentialsMenu_Display()
                         except ValueError:
                             print(inputError_str)
                 elif nonEssential_option=='2':
-                    non_essentialExpenses["events"]=abs(float(input("Enter your Events cost:")))
+                    while True:
+                        try:
+                            non_essentialExpenses["events"]=abs(float(input("Enter your Events cost:")))
+                            non_essentialsMenu_Display()
+                        except ValueError:
+                            print(inputError_str)
                 elif nonEssential_option=='3':
-                    non_essentialExpenses["gym"]=abs(float(input("Enter your Gym Membership cost:")))
+                    while True:
+                        try:
+                            non_essentialExpenses["gym"]=abs(float(input("Enter your Gym Membership cost:")))
+                            non_essentialsMenu_Display()
+                        except ValueError:
+                            print(inputError_str)
                 elif nonEssential_option=='4':
-                    non_essentialExpenses["streaming_services"]=abs(float(input("Enter your Streaming Services cost:")))
+                    while True:
+                        try:
+                            non_essentialExpenses["streaming_services"]=abs(float(input("Enter your Streaming Services cost:")))
+                            non_essentialsMenu_Display()
+                        except ValueError:
+                            print(inputError_str)
                 elif nonEssential_option=='5':
-                    non_essentialExpenses["haircut_salon"]=abs(float(input("Enter your Haircut and Salon cost:")))
+                    while True:
+                        try:
+                            non_essentialExpenses["haircut_salon"]=abs(float(input("Enter your Haircut and Salon cost:")))
+                            non_essentialsMenu_Display()
+                        except ValueError:
+                            print(inputError_str)
                 elif nonEssential_option=='6':
-                    non_essentialExpenses["clothing_accessories"]=abs(float(input("Enter your Clothing and Accessories cost:")))
+                    while True:
+                        try:
+                            non_essentialExpenses["clothing_accessories"]=abs(float(input("Enter your Clothing and Accessories cost:")))
+                            non_essentialsMenu_Display()
+                        except ValueError:
+                            print(inputError_str)
                 elif nonEssential_option=='7':
-                    non_essentialExpenses["skincare_cosmentics"]=abs(float(input("Enter your Skincare and Cosmetics cost:")))
+                    while True:
+                        try:
+                            non_essentialExpenses["skincare_cosmentics"]=abs(float(input("Enter your Skincare and Cosmetics cost:")))
+                            non_essentialsMenu_Display()
+                        except ValueError:
+                            print(inputError_str)
                 elif nonEssential_option=='8':
-                    non_essentialExpenses["travel"]=abs(float(input("Enter your Travel expenses cost:")))
+                    while True:
+                        try:
+                            non_essentialExpenses["travel"]=abs(float(input("Enter your Travel expenses cost:")))
+                            non_essentialsMenu_Display()
+                        except ValueError:
+                            print(inputError_str)
                 else:
                     os.system('cls')
                     print("Invalid option. Please choose a number between 1 and 8.")
                     print("-Non-Essential Expenses-\n1. Dining out\n2. Events\n3. Gym membership\n4. Streaming services (Netflix, Spotify, etc.)\n5. Haircuts and salon visits\n6. Clothing and accessories\n7. Skincare and cosmetics\n8. Travel expenses\n9. Exit")
                     print(endBanner)
-        else:
+        else:#WRONG INPUT
             os.system('cls')#clear screen before
             print("Invalid option. Please choose a number between 1 and 3.")
             print("-Expenses Categories-\n1. Essential\n2. Non-Essential\n3. Exit")
@@ -207,50 +243,65 @@ def mainMenuDisplay():#function to DISPLAY MAIN MENU options
     print(choisesDisplay)
     print(endBanner)
 
+
 #MAIN MENU
 def main_menu():#function to CALL MAIN MENU with functionality 
     mainMenuDisplay()#DISPLAY main menu
     #initialise
     monthlyIncome=None
-    monthlyExpenses=None
+    #monthlyExpenses=None
     summary=0
+
 
     while True:
         optionFromMenu=input(choice)
-        if optionFromMenu == '4':
+        if optionFromMenu == '4':#EXIT
             
             return False #returns false to the main_menu to exit while loop.
             break
-        elif optionFromMenu== '1':
-            monthlyIncome=enterIncome()#returns INCOME value and stores on the variable
+        elif optionFromMenu== '1':#ENTER INCOME
+            monthlyIncome=enterIncome()#returns INCOME value
             mainMenuDisplay()
-        elif optionFromMenu== '2':
+        elif optionFromMenu== '2':#ENTER EXPENSES
             os.system('cls')
             enterExpense() 
             #stores EXPENSES value and stores on var.
             mainMenuDisplay()
-        elif optionFromMenu== '3':
-            if monthlyExpenses is None or monthlyIncome is None:
+        elif optionFromMenu== '3':#SUMMATY
+            if monthlyIncome is None:
                 os.system('cls')
                 print("Please enter both \"income\" and \"expenses\" before viewing the summary.\n")
                 mainMenuDisplay()
             else:
                 os.system('cls')
+                essExp=sum(essentialExpenses.values())#summarry of values in the dictionary
+                non_essExp=sum(non_essentialExpenses.values())# -||-
+                monthlyExpenses= essExp-non_essExp
                 summary=monthlyIncome-monthlyExpenses
                 print(f"Summary: {summary}\nMonthly Income: {monthlyIncome}\nMonthly Expenses: {monthlyExpenses}")
-                mainMenuDisplay()
+                print(endBanner)
+                print("Personal Finance Calculator")
+                print("1. Main Menu\n2. Exit Program")
+                print(endBanner)
+                exitSummary=input(choice)
+                if exitSummary=='2':
+                    break
+                elif exitSummary=='1':
+                    os.system('cls')
+                    mainMenuDisplay()
+                else:
+                    print(wrongInput)
         else:
             os.system('cls')#clear screen before
             print(wrongInput)
             print(choisesDisplay)
             print(endBanner)
 
-        
-
 #PROGRAM
 while True:
     checker=main_menu()
     if checker== False:
         print(essentialExpenses, non_essentialExpenses)
+        #print(monthlyIncome)
         print("Exiting...")
         break
