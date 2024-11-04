@@ -92,22 +92,6 @@ def enterIncomeMenu_Display():
     print(endBanner)
 #METHODS PROVIDING FUNCTIONALITY OF THE PROGRAM:
 def enterIncome():#ENTER INCOME method
-    '''while True:
-        try:#this try-except process cannot accept strings-input expected is integer
-            enter_monthlyIncome=float(input("Enter your monthly income: "))
-            if -1>enter_monthlyIncome:#monthly income can't be negative number
-                print("***Invalid input. Please enter a number.***")
-                print(endBanner)
-            elif enter_monthlyIncome >=0:
-                os.system('cls')
-                print(f"Your monthly income is {enter_monthlyIncome}!")
-                return enter_monthlyIncome
-            else:#anything else but a number such as strings are invalid input
-                print("***Invalid input. Please enter a number.***")
-                print(endBanner)
-        except ValueError:
-            print("Invalid Input. Please enter a number.")
-            print(endBanner)'''
     enterIncomeMenu_Display()
     while True:
         income_option=input(choice)
@@ -359,10 +343,13 @@ def enterExpense():#ENTER EXPENSES method
 def summaryIncomeExpenses():#SUMMARY METHOD
     while True:
         remainingAmount=incomeSum-expensesSum
-        print(f"Monthly Income: {incomeSum}\nTotal Expenses: {expensesSum}\nRemaining Budget: {remainingAmount}")
+        print(f"Monthly Income: {incomeSum}\nTotal Monthly Expenses: {expensesSum}\nRemaining Budget: {remainingAmount}")
         '''
         ADD RECOMENDATIONS??????????????????????
-        if:
+        if incomeSum<=0:
+            print("You need to find ways to have an income, consider finding a job")
+        elif incomeSum<expensesSum:
+            print("You must spend")
         elif:
         '''
         print(endBanner)
