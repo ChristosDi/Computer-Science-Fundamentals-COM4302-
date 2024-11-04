@@ -11,6 +11,7 @@ choice =("Enter your choise: ")
 wrongInput=("***Invalid option. Please Try again***")
 inputError_str=("Invalid Input!Please enter a number.")
 
+monthlyIncome=None
 #dictionary for storing ESSENTIAL EXPENSES
 essentialExpenses={
 "rent":0,
@@ -32,6 +33,10 @@ non_essentialExpenses={
 "skincare_cosmentics":0,
 "travel":0
 }
+#Summary of the Expenses list 
+essExp=sum(essentialExpenses.values())#summarry of values in the dictionary
+non_essExp=sum(non_essentialExpenses.values())# -||-
+monthlyExpenses= float(essExp+non_essExp)#DISPLAY as FLOAT
 '''
 with open('PersonalFinance_Calculator.csv', 'w', newline='') as file:#opens CSV file in writtin mode (w mode) with the help of open()
     writer = csv.writer(file)#create CSV writter object
@@ -47,6 +52,7 @@ with open('PersonalFinance_Calculator.csv', 'r', newline='') as file:
     for row in reader:
         print(row)  # prints each row in the CSV
 '''
+#METHODS ONLY DISPLAYING MESSAGES FOR USER FRIENDLY EXP:
 def essentialsMenu_Display():#MENU DISPLAY ESSENTIALS(to avoid repetition)
     os.system('cls')
     print(welcomeMessage)
@@ -57,12 +63,34 @@ def non_essentialsMenu_Display():#MENU DISPLAY ESSENTIALS(to avoid repetition)
     print(welcomeMessage)
     print("-Non-Essential Expenses-\n1. Dining out\n2. Events\n3. Gym membership\n4. Streaming services (Netflix, Spotify, etc.)\n5. Haircuts and salon visits\n6. Clothing and accessories\n7. Skincare and cosmetics\n8. Travel expenses\n9. Exit")
     print(endBanner)
-def expensesMenu_Display():
+def expensesMenu_Display():#MENU DISPLAY EXPENSES menu
     os.system('cls')#clear screen before
     print(welcomeMessage)
     print("-Expenses Categories-\n1. Essential\n2. Non-Essential\n3. Exit")
     print(endBanner)
+def mainMenuDisplay():#function to DISPLAY MAIN MENU options
+    print("Welcome to Personal Finance Calculator")
+    print(choisesDisplay)
+    print(endBanner)
 
+#METHODS PROVIDING FUNCTIONALITY OF THE PROGRAM:
+def enterIncome():#ENTER INCOME method
+    while True:
+        try:#this try-except process cannot accept strings-input expected is integer
+            enter_monthlyIncome=float(input("Enter your monthly income: "))
+            if -1>enter_monthlyIncome:#monthly income can't be negative number
+                print("***Invalid input. Please enter a number.***")
+                print(endBanner)
+            elif enter_monthlyIncome >=0:
+                os.system('cls')
+                print(f"Your monthly income is {enter_monthlyIncome}!")
+                return enter_monthlyIncome
+            else:#anything else but a number such as strings are invalid input
+                print("***Invalid input. Please enter a number.***")
+                print(endBanner)
+        except ValueError:
+            print("Invalid Input. Please enter a number.")
+            print(endBanner)
 def enterExpense():#ENTER EXPENSES method
     os.system('cls')#clear screen before
     print(welcomeMessage)
@@ -226,79 +254,56 @@ def enterExpense():#ENTER EXPENSES method
             print("Invalid option. Please choose a number between 1 and 3.")
             print("-Expenses Categories-\n1. Essential\n2. Non-Essential\n3. Exit")
             print(endBanner)
-
-def enterIncome():#ENTER INCOME method
+def summaryIncomeExpenses():#SUMMARY METHOD
     while True:
-        try:#this try-except process cannot accept strings-input expected is integer
-            enter_income=float(input("Enter your monthly income: "))
-            if -1>enter_income:#monthly income can't be negative number
-                print("***Invalid input. Please enter a number.***")
-                print(endBanner)
-            elif enter_income >=0:
-                os.system('cls')
-                print(f"Your monthly income is {enter_income}!")
-                return enter_income
-                break
-            else:#anything else but a number such as strings are invalid input
-                print("***Invalid input. Please enter a number.***")
-                print(endBanner)
-        except ValueError:
-            print("Invalid Input. Please enter a number.")
+        if monthlyIncome is None:
+            os.system('cls')
+            print("Please enter both \"income\" and \"expenses\" before viewing the summary.\n")
+            mainMenuDisplay()
+            break
+        else:
+            summary=monthlyIncome-monthlyExpenses
+            print(f"Summary: {summary}\nMonthly Income: {monthlyIncome}\nMonthly Expenses: {monthlyExpenses}")
             print(endBanner)
-
-def mainMenuDisplay():#function to DISPLAY MAIN MENU options
-    print("Welcome to Personal Finance Calculator")
-    print(choisesDisplay)
-    print(endBanner)
-
-
+            print("Personal Finance Calculator")
+            print("1. Main Menu\n2. Exit Program")
+            print(endBanner)
+            exitSummary=input(choice)
+            if exitSummary=='2':
+                os.system('cls')
+                return False
+            elif exitSummary=='1':#goes back to MAIN MENU
+                os.system('cls')
+                mainMenuDisplay()
+                break
+            else:
+                print(wrongInput)
 #MAIN MENU
 def main_menu():#function to CALL MAIN MENU with functionality 
     mainMenuDisplay()#DISPLAY main menu
     #initialise
-    monthlyIncome=None
-    #monthlyExpenses=None
+    global monthlyIncome #updates the monthlyIncome variable which is public
     summary=0
 
 
     while True:
         optionFromMenu=input(choice)
         if optionFromMenu == '4':#EXIT
-            
             return False #returns false to the main_menu to exit while loop.
-            break
         elif optionFromMenu== '1':#ENTER INCOME
-            monthlyIncome=enterIncome()#returns INCOME value
+            monthlyIncome=enterIncome()#returns  monthly INCOME value
             mainMenuDisplay()
         elif optionFromMenu== '2':#ENTER EXPENSES
             os.system('cls')
-            enterExpense() 
-            #stores EXPENSES value and stores on var.
+            monthlyExpenses=enterExpense()#stores EXPENSES value and stores on var..
             mainMenuDisplay()
-        elif optionFromMenu== '3':#SUMMATY
-            if monthlyIncome is None:
-                os.system('cls')
-                print("Please enter both \"income\" and \"expenses\" before viewing the summary.\n")
-                mainMenuDisplay()
+        elif optionFromMenu== '3':#SUMMARY
+            os.system('cls')
+            sumIncomeExpenses=summaryIncomeExpenses()
+            if sumIncomeExpenses==False:
+                return False
             else:
-                os.system('cls')
-                essExp=sum(essentialExpenses.values())#summarry of values in the dictionary
-                non_essExp=sum(non_essentialExpenses.values())# -||-
-                monthlyExpenses= essExp-non_essExp
-                summary=monthlyIncome-monthlyExpenses
-                print(f"Summary: {summary}\nMonthly Income: {monthlyIncome}\nMonthly Expenses: {monthlyExpenses}")
-                print(endBanner)
-                print("Personal Finance Calculator")
-                print("1. Main Menu\n2. Exit Program")
-                print(endBanner)
-                exitSummary=input(choice)
-                if exitSummary=='2':
-                    break
-                elif exitSummary=='1':
-                    os.system('cls')
-                    mainMenuDisplay()
-                else:
-                    print(wrongInput)
+                continue
         else:
             os.system('cls')#clear screen before
             print(wrongInput)
@@ -311,5 +316,6 @@ while True:
     if checker== False:
         print(essentialExpenses, non_essentialExpenses)
         #print(monthlyIncome)
-        print("Exiting...")
+        
+        print("Thank you for using Personal Finance Calculator!")
         break
