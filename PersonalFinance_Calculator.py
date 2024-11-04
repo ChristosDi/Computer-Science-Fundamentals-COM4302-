@@ -157,6 +157,7 @@ def enterExpense():#ENTER EXPENSES method
                         try:
                             non_essentialExpenses["dining_out"]=abs(float(input("Enter your Dining Out cost:")))#we can accept even negative numbs as expenses-->abs()method turning negative to positive
                             non_essentialsMenu_Display()
+                            break
                         except ValueError:
                             print(inputError_str)
                 elif nonEssential_option=='2':
@@ -164,6 +165,7 @@ def enterExpense():#ENTER EXPENSES method
                         try:
                             non_essentialExpenses["events"]=abs(float(input("Enter your Events cost:")))
                             non_essentialsMenu_Display()
+                            break
                         except ValueError:
                             print(inputError_str)
                 elif nonEssential_option=='3':
@@ -171,6 +173,7 @@ def enterExpense():#ENTER EXPENSES method
                         try:
                             non_essentialExpenses["gym"]=abs(float(input("Enter your Gym Membership cost:")))
                             non_essentialsMenu_Display()
+                            break
                         except ValueError:
                             print(inputError_str)
                 elif nonEssential_option=='4':
@@ -178,6 +181,7 @@ def enterExpense():#ENTER EXPENSES method
                         try:
                             non_essentialExpenses["streaming_services"]=abs(float(input("Enter your Streaming Services cost:")))
                             non_essentialsMenu_Display()
+                            break
                         except ValueError:
                             print(inputError_str)
                 elif nonEssential_option=='5':
@@ -185,6 +189,7 @@ def enterExpense():#ENTER EXPENSES method
                         try:
                             non_essentialExpenses["haircut_salon"]=abs(float(input("Enter your Haircut and Salon cost:")))
                             non_essentialsMenu_Display()
+                            break
                         except ValueError:
                             print(inputError_str)
                 elif nonEssential_option=='6':
@@ -192,6 +197,7 @@ def enterExpense():#ENTER EXPENSES method
                         try:
                             non_essentialExpenses["clothing_accessories"]=abs(float(input("Enter your Clothing and Accessories cost:")))
                             non_essentialsMenu_Display()
+                            break
                         except ValueError:
                             print(inputError_str)
                 elif nonEssential_option=='7':
@@ -199,6 +205,7 @@ def enterExpense():#ENTER EXPENSES method
                         try:
                             non_essentialExpenses["skincare_cosmentics"]=abs(float(input("Enter your Skincare and Cosmetics cost:")))
                             non_essentialsMenu_Display()
+                            break
                         except ValueError:
                             print(inputError_str)
                 elif nonEssential_option=='8':
@@ -206,6 +213,7 @@ def enterExpense():#ENTER EXPENSES method
                         try:
                             non_essentialExpenses["travel"]=abs(float(input("Enter your Travel expenses cost:")))
                             non_essentialsMenu_Display()
+                            break
                         except ValueError:
                             print(inputError_str)
                 else:
