@@ -11,7 +11,6 @@ choice =("Enter your choise: ")
 wrongInput=("***Invalid option. Please Try again***")
 inputError_str=("Invalid Input!Please enter a number.")
 
-monthlyIncome=None
 #dictionary for storing ESSENTIAL EXPENSES
 essentialExpenses={
 "rent":0,
@@ -33,10 +32,24 @@ non_essentialExpenses={
 "skincare_cosmentics":0,
 "travel":0
 }
+#dictionary for storing INCOME CATEGORIES
+income={
+"primarySalary":0,
+"secondarySalary":0,
+"bonuses":0,
+"overtime":0,
+"capitalGains":0,
+"rentalIncome":0,
+"selfEmployment":0,
+"gift":0,
+"taxRefund":0
+}
 #Summary of the Expenses list 
-essExp=sum(essentialExpenses.values())#summarry of values in the dictionary
-non_essExp=sum(non_essentialExpenses.values())# -||-
-monthlyExpenses= float(essExp+non_essExp)#DISPLAY as FLOAT
+essentExp=sum(essentialExpenses.values())#summarry of values in the dictionary
+non_essentExp=sum(non_essentialExpenses.values())# -||-
+expensesSum= float(essentExp+non_essentExp)#DISPLAY as FLOAT
+#Summary of the Income list
+incomeSum=float(sum(income.values()))
 '''
 with open('PersonalFinance_Calculator.csv', 'w', newline='') as file:#opens CSV file in writtin mode (w mode) with the help of open()
     writer = csv.writer(file)#create CSV writter object
@@ -72,10 +85,14 @@ def mainMenuDisplay():#function to DISPLAY MAIN MENU options
     print("Welcome to Personal Finance Calculator")
     print(choisesDisplay)
     print(endBanner)
-
+def enterIncomeMenu_Display():
+    os.system('cls')#clear screen before
+    print(welcomeMessage)
+    print("-Income Options-\n1. Primary Salary\n2. Secondary Salary\n3. Bonuses-Commissions\n4. Overtime Pay\n5. Capital Gains\n6. Rental Income\n7. Self-Employment Income\n8. Gift Money\n9. Tax Refund\n10. Exit")
+    print(endBanner)
 #METHODS PROVIDING FUNCTIONALITY OF THE PROGRAM:
 def enterIncome():#ENTER INCOME method
-    while True:
+    '''while True:
         try:#this try-except process cannot accept strings-input expected is integer
             enter_monthlyIncome=float(input("Enter your monthly income: "))
             if -1>enter_monthlyIncome:#monthly income can't be negative number
@@ -90,7 +107,92 @@ def enterIncome():#ENTER INCOME method
                 print(endBanner)
         except ValueError:
             print("Invalid Input. Please enter a number.")
+            print(endBanner)'''
+    enterIncomeMenu_Display()
+    while True:
+        income_option=input(choice)
+        
+        if income_option =='10':#exit
+            os.system('cls')
+            break
+        elif income_option == '1':
+            while True:
+                try:
+                    income["primarySalary"] = float(input("Enter your Primary Salary income: "))
+                    enterIncomeMenu_Display()
+                    break
+                except ValueError:
+                    print(inputError_str)
+        elif income_option == '2':
+            while True:
+                try:
+                    income["secondarySalary"] = float(input("Enter your Secondary Salary income: "))
+                    enterIncomeMenu_Display()
+                    break
+                except ValueError:
+                    print(inputError_str)
+        elif income_option == '3':
+            while True:
+                try:
+                    income["bonuses"] = float(input("Enter your Bonus/Commision income: "))
+                    enterIncomeMenu_Display()
+                    break
+                except ValueError:
+                    print(inputError_str)
+        elif income_option == '4':
+            while True:
+                try:
+                    income["ovetime"] = float(input("Enter your Overtime Pay income: "))
+                    enterIncomeMenu_Display()
+                    break
+                except ValueError:
+                    print(inputError_str)
+        elif income_option == '5':
+            while True:
+                try:
+                    income["capitalGains"] = float(input("Enter your Capital Gains income: "))
+                    enterIncomeMenu_Display()
+                    break
+                except ValueError:
+                    print(inputError_str)
+        elif income_option == '6':
+            while True:
+                try:
+                    income["rentalIncome"] = float(input("Enter your Rental Income: "))
+                    enterIncomeMenu_Display()
+                    break
+                except ValueError:
+                    print(inputError_str)
+        elif income_option == '7':
+            while True:
+                try:
+                    income["selfEmployment"] = float(input("Enter your Self-Employment income: "))
+                    enterIncomeMenu_Display()
+                    break
+                except ValueError:
+                    print(inputError_str)
+        elif income_option == '8':
+            while True:
+                try:
+                    income["gift"] = float(input("Enter your Gift Money income: "))
+                    enterIncomeMenu_Display()
+                    break
+                except ValueError:
+                    print(inputError_str)
+        elif income_option == '9':
+            while True:
+                try:
+                    income["taxRefund"] = float(input("Enter your Tax Refund income: "))
+                    essentialsMenu_Display()
+                    break
+                except ValueError:
+                    print(inputError_str)            
+        else:
+            os.system('cls')
+            print("Invalid option. Please choose a number between 1 and 10.")
+            print("-Income Options-\n1. Primary Salary\n2. Secondary Salary\n3. Bonuses-Commissions\n4. Overtime Pay\n5. Capital Gains\n6. Rental Income\n7. Self-Employment Income\n8. Gift Money\n9. Tax Refund\n10. Exit")
             print(endBanner)
+    
 def enterExpense():#ENTER EXPENSES method
     os.system('cls')#clear screen before
     print(welcomeMessage)
@@ -256,28 +358,27 @@ def enterExpense():#ENTER EXPENSES method
             print(endBanner)
 def summaryIncomeExpenses():#SUMMARY METHOD
     while True:
-        if monthlyIncome is None:
+        remainingAmount=incomeSum-expensesSum
+        print(f"Monthly Income: {incomeSum}\nTotal Expenses: {expensesSum}\nRemaining Budget: {remainingAmount}")
+        '''
+        ADD RECOMENDATIONS??????????????????????
+        if:
+        elif:
+        '''
+        print(endBanner)
+        print("Personal Finance Calculator")
+        print("1. Main Menu\n2. Exit Program")
+        print(endBanner)
+        exitSummary=input(choice)
+        if exitSummary=='2':
             os.system('cls')
-            print("Please enter both \"income\" and \"expenses\" before viewing the summary.\n")
+            return False
+        elif exitSummary=='1':#goes back to MAIN MENU
+            os.system('cls')
             mainMenuDisplay()
             break
         else:
-            summary=monthlyIncome-monthlyExpenses
-            print(f"Summary: {summary}\nMonthly Income: {monthlyIncome}\nMonthly Expenses: {monthlyExpenses}")
-            print(endBanner)
-            print("Personal Finance Calculator")
-            print("1. Main Menu\n2. Exit Program")
-            print(endBanner)
-            exitSummary=input(choice)
-            if exitSummary=='2':
-                os.system('cls')
-                return False
-            elif exitSummary=='1':#goes back to MAIN MENU
-                os.system('cls')
-                mainMenuDisplay()
-                break
-            else:
-                print(wrongInput)
+            print(wrongInput)
 #MAIN MENU
 def main_menu():#function to CALL MAIN MENU with functionality 
     mainMenuDisplay()#DISPLAY main menu
@@ -314,8 +415,6 @@ def main_menu():#function to CALL MAIN MENU with functionality
 while True:
     checker=main_menu()
     if checker== False:
-        print(essentialExpenses, non_essentialExpenses)
-        #print(monthlyIncome)
-        
+        print(essentialExpenses,"\n",non_essentialExpenses,"\n",income) 
         print("Thank you for using Personal Finance Calculator!")
         break
