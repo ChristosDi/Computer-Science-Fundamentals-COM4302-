@@ -347,16 +347,47 @@ def summaryBudget():#SUMMARISE BUDGET
         non_essentExp=sum(non_essentialExpenses.values())# -||- NON-ESSENTIALS
         #TOTAL MONTHLY EXPENSES summary:
         totalMonthlyExp= float(essentExp+non_essentExp)#DISPLAY as FLOAT
-        #Remaining Amount after expensess deducted from income:
+        #Remaining Amount after expenses deducted from income:
         remainingAmount=incomeSum-totalMonthlyExp
 
         print(welcomeMessage)
         print(f"Monthly Income: {incomeSum}\nTotal Monthly Expenses: {totalMonthlyExp}\nRemaining Budget: {remainingAmount}")
         print(endBanner)
-        if totalMonthlyExp>incomeSum:#INCOME LESS THAN EXPENSSES
-                print(f"You are {remainingAmount} GBP/USD over the budget.")
-        elif totalMonthlyExp<incomeSum:#INCOME MORE THAN EXPENSSES
-            print(f"You are under the budget.\nYour remaining amount is: {remainingAmount}")
+
+        if totalMonthlyExp>incomeSum:#INCOME LESS THAN EXPENSES
+                print(f"You are {remainingAmount} over the budget.")
+                #sorting dictionary from the greatest value in descending order, excluding zero values
+                sorted_nonEssentials = sorted(((k, v) for k, v in non_essentialExpenses.items() if v > 0), key=lambda item: item[1], reverse=True)
+                sorted_essentials = sorted(((k, v) for k, v in essentialExpenses.items() if v > 0), key=lambda item: item[1], reverse=True)
+                print("Consider reducing the following expenses to stay within budget:")
+                # DISPLAY the sorted list with userfriendly names
+                if sorted_nonEssentials:#DISPLAY only the values that don't have zeros(0)
+                    print("Non-Essential expenses:")
+                    for expense, cost in sorted_nonEssentials:
+                        print(f"- {expense.replace('_', ' ').title()}: {cost}")#PRINT NON-ESSENTIAL
+                else:
+                    print("No non-essential expenses recorded.")
+                if sorted_essentials:
+                    print("Essential expenses:")
+                    for expense, cost in sorted_essentials:
+                        print(f"- {expense.title()}: {cost}")#PRINT ESSENTIAL
+                else:
+                    print("No essential expenses recorded.")        
+        elif totalMonthlyExp<incomeSum:#INCOME MORE THAN EXPENSES
+            remaining_percentage=(remainingAmount/incomeSum)*100 #FORMULA TO CALCULATE how much percentage of income is left
+            print(f"You are under the budget.\nYour remaining amount is: {remainingAmount} which is {remaining_percentage:.2f}% of your income.") #string formating method to control the number of decimal places(:2f)
+            #RECOMMENDATIONS BASED ON BUDGET STATUS
+            if remaining_percentage<=25:
+                print("You're running low on your budget. Consider reducing non-essential spending to avoid overspending.")
+            elif remaining_percentage<=50:
+                print("You're halfway through your budget. Keep monitoring your expenses to ensure you stay on track.")
+            elif remaining_percentage<=75:
+                print("Good job! You have a healthy portion of your budget remaining.")
+            elif remaining_percentage<100:
+                print("Excellent! You still have a large portion of your budget left. This is a great opportunity to increase your savings.")
+            elif remaining_percentage>100:
+                print("Amazing! You stayed completely within your budget. Consider transferring the surplus to savings or investments.")
+            
             print(ask_CalcPercentage)
             print(endBanner)
             while True:
@@ -370,6 +401,7 @@ def summaryBudget():#SUMMARISE BUDGET
                     print(welcomeMessage)
                     while True:
                         try:
+                            global percentageCalc
                             percentageCalc=int(input(f"Please write the percentage of {remainingAmount} that you would like to save: "))
                             if percentageCalc>100:
                                 os.system('cls')
@@ -396,11 +428,10 @@ def summaryBudget():#SUMMARISE BUDGET
                     print(wrongInput)
                     print(welcomeMessage)
                     print(ask_CalcPercentage)
-
-        elif totalMonthlyExp==incomeSum:
-            print("You are neither over nor under budget.")
-            print(remainingAmount,"%")
-
+        elif totalMonthlyExp==incomeSum:#INCOME AND EXPNSES EQUAL
+            print("You are neither over nor under budget.")#IF INCOME IS 0 DISPLAYS ONLY THIS MESSAGE
+            if incomeSum>0:#IF HAVING INCOME
+                print("You're exactly on budget! Keep up the good work managing your expenses carefully. Consider setting aside any extra income in a savings account or toward an emergency fund.")
         print(endBanner)
         print("Personal Finance Calculator")
         print("1. Main Menu\n2. Exit Program")
@@ -452,6 +483,32 @@ def main_menu():#function to CALL MAIN MENU with functionality
 while True:
     checker=main_menu()
     if checker== False:
-        print(essentialExpenses,"\n",non_essentialExpenses,"\n",income) 
-        print("Thank you for using Personal Finance Calculator!")
+        os.system('cls')
+        print("Thank you for using Personal Finance Calculator!")#Bellow analysis of INCOME, EXPENSES etc will print
+        #Sort from the Greatest value:
+        sorted_Income = sorted(((k, v) for k, v in income.items() if v > 0), key=lambda item: item[1], reverse=True)
+        #DISPLAY the sorted list with userfriendly names,
+        if sorted_Income:#DISPLAY only the values that don't have zeros(0)
+            print("Your Income sources:")
+            for incomes, cost in sorted_Income:
+                print(f"- {incomes.replace('_', ' ').title()}: {cost}")#PRINT INCOME
+        #DISPLAY EXPENSES:
+        sorted_nonEssentials = sorted(((k, v) for k, v in non_essentialExpenses.items() if v > 0), key=lambda item: item[1], reverse=True)
+        sorted_essentials = sorted(((k, v) for k, v in essentialExpenses.items() if v > 0), key=lambda item: item[1], reverse=True)
+        # DISPLAY the sorted list with userfriendly names
+        if sorted_nonEssentials:#DISPLAY only the values that don't have zeros(0)
+            print("Your Non-Essential expenses:")
+            for expense, cost in sorted_nonEssentials:
+                print(f"- {expense.replace('_', ' ').title()}: {cost}")#PRINT NON-ESSENTIAL
+        else:
+            print("No non-essential expenses recorded.")
+        if sorted_essentials:
+            print("Your Essential expenses:")
+            for expense, cost in sorted_essentials:
+                print(f"- {expense.title()}: {cost}")#PRINT ESSENTIAL
+        else:
+            print("No essential expenses recorded.")
+
+        if calculation:
+            print(f"You asked to save {percentageCalc}% of your income:{calculation} ")     
         break
