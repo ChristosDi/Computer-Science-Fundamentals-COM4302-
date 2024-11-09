@@ -7,10 +7,24 @@ welcomeMessage=("Welcome to Personal Finance Calculator")
 
 choisesDisplay=("1. Enter Income\n2. Add Expences\n3. View Budget Summary\n4. Exit")
 endBanner =("--------------------------------------------------------------------------------------------------------")
-choice =("Enter your choise: ")
+choice =("Enter your choice: ")
 wrongInput=("***Invalid option. Please Try again***")
 inputError_str=("Invalid Input!Please enter a number.")
+ask_CalcPercentage=("Would you like to calculate the percentage of the remaining amount you would like to save?\nY--> Yes\nN--> No")
 
+
+#dictionary for storing INCOME CATEGORIES
+income={
+"primarySalary":0,
+"secondarySalary":0,
+"bonuses":0,
+"overtime":0,
+"capitalGains":0,
+"rentalIncome":0,
+"selfEmployment":0,
+"gift":0,
+"taxRefund":0
+}
 #dictionary for storing ESSENTIAL EXPENSES
 essentialExpenses={
 "rent":0,
@@ -32,24 +46,7 @@ non_essentialExpenses={
 "skincare_cosmentics":0,
 "travel":0
 }
-#dictionary for storing INCOME CATEGORIES
-income={
-"primarySalary":0,
-"secondarySalary":0,
-"bonuses":0,
-"overtime":0,
-"capitalGains":0,
-"rentalIncome":0,
-"selfEmployment":0,
-"gift":0,
-"taxRefund":0
-}
-#Summary of the Expenses list 
-essentExp=sum(essentialExpenses.values())#summarry of values in the dictionary
-non_essentExp=sum(non_essentialExpenses.values())# -||-
-expensesSum= float(essentExp+non_essentExp)#DISPLAY as FLOAT
-#Summary of the Income list
-incomeSum=float(sum(income.values()))
+
 '''
 with open('PersonalFinance_Calculator.csv', 'w', newline='') as file:#opens CSV file in writtin mode (w mode) with the help of open()
     writer = csv.writer(file)#create CSV writter object
@@ -66,30 +63,31 @@ with open('PersonalFinance_Calculator.csv', 'r', newline='') as file:
         print(row)  # prints each row in the CSV
 '''
 #METHODS ONLY DISPLAYING MESSAGES FOR USER FRIENDLY EXP:
-def essentialsMenu_Display():#MENU DISPLAY ESSENTIALS(to avoid repetition)
+def essentialsMenu_Display():#MENU DISPLAY ESSENTIAL options(to avoid repetition)
     os.system('cls')
     print(welcomeMessage)
     print("-Essential Expenses-\n1. Rent/Mortgage Payment\n2. Electricity\n3. Water\n4. Gas/Heating\n5. Internet\n6. Phone \n7. Supermarket\n8. Exit")
     print(endBanner)
-def non_essentialsMenu_Display():#MENU DISPLAY ESSENTIALS(to avoid repetition)
+def non_essentialsMenu_Display():#MENU DISPLAY NON-ESSENTIALS options (to avoid repetition)
     os.system('cls')
     print(welcomeMessage)
     print("-Non-Essential Expenses-\n1. Dining out\n2. Events\n3. Gym membership\n4. Streaming services (Netflix, Spotify, etc.)\n5. Haircuts and salon visits\n6. Clothing and accessories\n7. Skincare and cosmetics\n8. Travel expenses\n9. Exit")
     print(endBanner)
-def expensesMenu_Display():#MENU DISPLAY EXPENSES menu
+def expensesMenu_Display():#MENU DISPLAY EXPENSE categories essential-non
     os.system('cls')#clear screen before
     print(welcomeMessage)
     print("-Expenses Categories-\n1. Essential\n2. Non-Essential\n3. Exit")
     print(endBanner)
-def mainMenuDisplay():#function to DISPLAY MAIN MENU options
+def mainMenuDisplay():#DISPLAY MAIN MENU options
     print("Welcome to Personal Finance Calculator")
     print(choisesDisplay)
     print(endBanner)
-def enterIncomeMenu_Display():
+def enterIncomeMenu_Display():#MENU DISPLAY INCOME options
     os.system('cls')#clear screen before
     print(welcomeMessage)
     print("-Income Options-\n1. Primary Salary\n2. Secondary Salary\n3. Bonuses-Commissions\n4. Overtime Pay\n5. Capital Gains\n6. Rental Income\n7. Self-Employment Income\n8. Gift Money\n9. Tax Refund\n10. Exit")
     print(endBanner)
+    
 #METHODS PROVIDING FUNCTIONALITY OF THE PROGRAM:
 def enterIncome():#ENTER INCOME method
     enterIncomeMenu_Display()
@@ -174,7 +172,7 @@ def enterIncome():#ENTER INCOME method
         else:
             os.system('cls')
             print("Invalid option. Please choose a number between 1 and 10.")
-            print("-Income Options-\n1. Primary Salary\n2. Secondary Salary\n3. Bonuses-Commissions\n4. Overtime Pay\n5. Capital Gains\n6. Rental Income\n7. Self-Employment Income\n8. Gift Money\n9. Tax Refund\n10. Exit")
+            print(inputError_str)
             print(endBanner)
     
 def enterExpense():#ENTER EXPENSES method
@@ -340,18 +338,69 @@ def enterExpense():#ENTER EXPENSES method
             print("Invalid option. Please choose a number between 1 and 3.")
             print("-Expenses Categories-\n1. Essential\n2. Non-Essential\n3. Exit")
             print(endBanner)
-def summaryIncomeExpenses():#SUMMARY METHOD
+def summaryBudget():#SUMMARISE BUDGET
     while True:
-        remainingAmount=incomeSum-expensesSum
-        print(f"Monthly Income: {incomeSum}\nTotal Monthly Expenses: {expensesSum}\nRemaining Budget: {remainingAmount}")
-        '''
-        ADD RECOMENDATIONS??????????????????????
-        if incomeSum<=0:
-            print("You need to find ways to have an income, consider finding a job")
-        elif incomeSum<expensesSum:
-            print("You must spend")
-        elif:
-        '''
+        #INCOME Summary :
+        incomeSum=float(sum(income.values()))#Summary of the Income dictionary
+        #Summary of the Expenses list :
+        essentExp=sum(essentialExpenses.values())#summarry of values in the dictionary ESSENTIALS
+        non_essentExp=sum(non_essentialExpenses.values())# -||- NON-ESSENTIALS
+        #TOTAL MONTHLY EXPENSES summary:
+        totalMonthlyExp= float(essentExp+non_essentExp)#DISPLAY as FLOAT
+        #Remaining Amount after expensess deducted from income:
+        remainingAmount=incomeSum-totalMonthlyExp
+
+        print(welcomeMessage)
+        print(f"Monthly Income: {incomeSum}\nTotal Monthly Expenses: {totalMonthlyExp}\nRemaining Budget: {remainingAmount}")
+        print(endBanner)
+        if totalMonthlyExp>incomeSum:#INCOME LESS THAN EXPENSSES
+                print(f"You are {remainingAmount} GBP/USD over the budget.")
+        elif totalMonthlyExp<incomeSum:#INCOME MORE THAN EXPENSSES
+            print(f"You are under the budget.\nYour remaining amount is: {remainingAmount}")
+            print(ask_CalcPercentage)
+            print(endBanner)
+            while True:
+                choiceForPercentage=input(choice).upper()
+                if choiceForPercentage=='N':
+                    os.system('cls')
+                    print(welcomeMessage)
+                    break
+                elif choiceForPercentage=='Y':
+                    os.system('cls')
+                    print(welcomeMessage)
+                    while True:
+                        try:
+                            percentageCalc=int(input(f"Please write the percentage of {remainingAmount} that you would like to save: "))
+                            if percentageCalc>100:
+                                os.system('cls')
+                                print(f"You have asked to save {percentageCalc}%.\nYou can save up to 100% which is the full amount of {remainingAmount}. Please try again.")
+                            elif 0<percentageCalc<=100:
+                                global calculation
+                                calculation=remainingAmount*percentageCalc/100
+                                os.system('cls')
+                                print(welcomeMessage)
+                                print(f"{percentageCalc}% of {remainingAmount} is the amount of {calculation}! ")
+                                print("Would you like to calculate the percentage of the remaining amount again?\nY--> Yes\nN--> No")
+                                break
+                            else:
+                                os.system('cls')
+                                print(welcomeMessage)
+                                print("Please enter a positive percentage value.")
+                                
+                        except:
+                            os.system('cls')
+                            print(welcomeMessage)
+                            print(inputError_str)
+                else:
+                    os.system('cls')
+                    print(wrongInput)
+                    print(welcomeMessage)
+                    print(ask_CalcPercentage)
+
+        elif totalMonthlyExp==incomeSum:
+            print("You are neither over nor under budget.")
+            print(remainingAmount,"%")
+
         print(endBanner)
         print("Personal Finance Calculator")
         print("1. Main Menu\n2. Exit Program")
@@ -365,6 +414,7 @@ def summaryIncomeExpenses():#SUMMARY METHOD
             mainMenuDisplay()
             break
         else:
+            os.system('cls')
             print(wrongInput)
 #MAIN MENU
 def main_menu():#function to CALL MAIN MENU with functionality 
@@ -387,8 +437,8 @@ def main_menu():#function to CALL MAIN MENU with functionality
             mainMenuDisplay()
         elif optionFromMenu== '3':#SUMMARY
             os.system('cls')
-            sumIncomeExpenses=summaryIncomeExpenses()
-            if sumIncomeExpenses==False:
+            budgetSum=summaryBudget()
+            if budgetSum==False:
                 return False
             else:
                 continue
