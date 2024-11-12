@@ -5,7 +5,7 @@ os.system('cls') #clear screen
 #variables stored for menu DISPLAY
 welcomeMessage=("Welcome to Personal Finance Calculator")
 
-choisesDisplay=("1. Enter Income\n2. Add Expences\n3. View Budget Summary\n4. Exit")
+choisesDisplay=("1. Enter Income\n2. Add Expenses\n3. View Budget Summary\n4. Exit")
 endBanner =("--------------------------------------------------------------------------------------------------------")
 choice =("Enter your choice: ")
 wrongInput=("***Invalid option. Please Try again***")
@@ -47,21 +47,6 @@ non_essentialExpenses={
 "travel":0
 }
 
-'''
-with open('PersonalFinance_Calculator.csv', 'w', newline='') as file:#opens CSV file in writtin mode (w mode) with the help of open()
-    writer = csv.writer(file)#create CSV writter object
-    row_list = [
-        ["income", "expenses", "budgetSummary", "essential", "non_essential"], 
-        ["5000", "2000", "3000", "1200","800"]
-        ]# write multiple rows  
-    writer.writerow(row_list) # writes the field data and other data to CSV 
-
-# Open the CSV file in read mode
-with open('PersonalFinance_Calculator.csv', 'r', newline='') as file:
-    reader = csv.reader(file)  # CSV reader object
-    for row in reader:
-        print(row)  # prints each row in the CSV
-'''
 #METHODS ONLY DISPLAYING MESSAGES FOR USER FRIENDLY EXP:
 def essentialsMenu_Display():#MENU DISPLAY ESSENTIAL options(to avoid repetition)
     os.system('cls')
