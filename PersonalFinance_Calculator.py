@@ -157,6 +157,7 @@ def enterIncome():#ENTER INCOME method
         else:
             os.system('cls')
             print("Invalid option. Please choose a number between 1 and 10.")
+            print("-Income Options-\n1. Primary Salary\n2. Secondary Salary\n3. Bonuses-Commissions\n4. Overtime Pay\n5. Capital Gains\n6. Rental Income\n7. Self-Employment Income\n8. Gift Money\n9. Tax Refund\n10. Exit")
             print(endBanner)
     
 def enterExpense():#ENTER EXPENSES method
