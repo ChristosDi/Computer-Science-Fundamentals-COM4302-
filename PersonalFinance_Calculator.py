@@ -1,4 +1,3 @@
-import csv #import CSV module
 import os #clear screen module
 os.system('cls') #clear screen
 
