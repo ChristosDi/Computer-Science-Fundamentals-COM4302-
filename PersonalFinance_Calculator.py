@@ -157,7 +157,6 @@ def enterIncome():#ENTER INCOME method
         else:
             os.system('cls')
             print("Invalid option. Please choose a number between 1 and 10.")
-            print(inputError_str)
             print(endBanner)
     
 def enterExpense():#ENTER EXPENSES method
@@ -467,12 +466,12 @@ def main_menu():#function to CALL MAIN MENU with functionality
 #PROGRAM
 while True:
     checker=main_menu()
-    if checker== False:
+    if checker== False:#IF INPUT on the MAIN menu is 4 will RETURN FALSE
         os.system('cls')
         print("Thank you for using Personal Finance Calculator!")#Bellow analysis of INCOME, EXPENSES etc will print
         #Sort from the Greatest value:
         sorted_Income = sorted(((k, v) for k, v in income.items() if v > 0), key=lambda item: item[1], reverse=True)
-        #DISPLAY the sorted list with userfriendly names,
+        #DISPLAY the sorted dict with userfriendly names,
         if sorted_Income:#DISPLAY only the values that don't have zeros(0)
             print("Your Income sources:")
             for incomes, cost in sorted_Income:
