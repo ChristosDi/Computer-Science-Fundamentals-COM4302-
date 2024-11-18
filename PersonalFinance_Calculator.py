@@ -314,7 +314,7 @@ def enterExpense():#ENTER EXPENSES method
                             print(inputError_str)
                 else:
                     os.system('cls')
-                    print("Invalid option. Please choose a number between 1 and 8.")
+                    print("Invalid option. Please choose a number between 1 and 9.")
                     print("-Non-Essential Expenses-\n1. Dining out\n2. Events\n3. Gym membership\n4. Streaming services (Netflix, Spotify, etc.)\n5. Haircuts and salon visits\n6. Clothing and accessories\n7. Skincare and cosmetics\n8. Travel expenses\n9. Exit")
                     print(endBanner)
         else:#WRONG INPUT
