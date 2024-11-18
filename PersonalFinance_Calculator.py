@@ -369,7 +369,7 @@ def summaryBudget():#SUMMARISE BUDGET
                 print("Good job! You have a healthy portion of your budget remaining.")
             elif remaining_percentage<100:
                 print("Excellent! You still have a large portion of your budget left. This is a great opportunity to increase your savings.")
-            elif remaining_percentage>100:
+            elif remaining_percentage>=100:
                 print("Amazing! You stayed completely within your budget. Consider transferring the surplus to savings or investments.")
             
             print(ask_CalcPercentage)
