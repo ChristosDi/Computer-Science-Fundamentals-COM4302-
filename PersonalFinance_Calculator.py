@@ -149,7 +149,7 @@ def enterIncome():#ENTER INCOME method
             while True:
                 try:
                     income["taxRefund"] = float(input("Enter your Tax Refund income: "))
-                    essentialsMenu_Display()
+                    enterIncomeMenu_Display()
                     break
                 except ValueError:
                     print(inputError_str)            
